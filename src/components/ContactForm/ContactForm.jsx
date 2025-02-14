@@ -1,8 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import s from './ContactForm.module.css';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsSlice';
 
-const ContactForm = ({ onAdd }) => {
+const ContactForm = () => {
+  const dispatch = useDispatch();
+
   const initialContact = {
     name: '',
     number: '',
@@ -20,11 +24,14 @@ const ContactForm = ({ onAdd }) => {
   });
 
   const handleSubmit = (values, actions) => {
-    onAdd({
+    const newObj = {
       id: crypto.randomUUID(),
       name: values.name,
       number: values.number,
-    });
+    };
+
+    dispatch(addContact(newObj));
+
     actions.resetForm();
   };
 
